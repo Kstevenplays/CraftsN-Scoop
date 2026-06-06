@@ -1,0 +1,16 @@
+<header class="topbar">
+  <a routerLink="/" class="brand">Crafts N Scoop</a>
+
+  <nav>
+    <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Shop</a>
+    <a routerLink="/cart" routerLinkActive="active">Cart ({{ cart.count() }})</a>
+    <a *ngIf="auth.isAuthenticated()" routerLink="/orders" routerLinkActive="active">Orders</a>
+    <a *ngIf="auth.isAdmin()" routerLink="/admin" routerLinkActive="active">Admin</a>
+    <a *ngIf="!auth.isAuthenticated()" routerLink="/login" routerLinkActive="active">Login</a>
+    <button *ngIf="auth.isAuthenticated()" type="button" (click)="auth.logout()">Logout</button>
+  </nav>
+</header>
+
+<main class="page">
+  <router-outlet></router-outlet>
+</main>

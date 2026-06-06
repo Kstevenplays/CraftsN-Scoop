@@ -1,0 +1,21 @@
+{
+  "name": "crafts-n-scoop/api",
+  "description": "Crafts N Scoop Slim API",
+  "type": "project",
+  "require": {
+    "php": "^8.2",
+    "slim/slim": "^4.13",
+    "slim/psr7": "^1.7",
+    "lcobucci/jwt": "^5.5",
+    "paragonie/sodium_compat_ext_sodium": "^1.0",
+    "vlucas/phpdotenv": "^5.6"
+  },
+  "autoload": {
+    "psr-4": {
+      "App\\": "src/"
+    }
+  },
+  "scripts": {
+    "start": "php -S 127.0.0.1:8080 -t public"
+  }
+}
