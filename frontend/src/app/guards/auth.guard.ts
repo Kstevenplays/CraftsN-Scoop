@@ -9,6 +9,6 @@ export const authGuard: CanActivateFn = () => {
   if (auth.isAuthenticated()) {
     return true;
   }
-
-  return router.createUrlTree(['/login']);
+  // Redirect to login and include the returnUrl so callers can be returned after auth
+  return router.createUrlTree(['/login'], { queryParams: { returnUrl: router.url } });
 };

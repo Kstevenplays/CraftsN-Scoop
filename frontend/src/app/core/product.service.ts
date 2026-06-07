@@ -7,10 +7,16 @@ import { Product } from '../models/types';
 export class ProductService {
   constructor(private http: HttpClient) {}
 
-  getProducts(admin = false) {
+  getProducts(admin = false, limit?: number, sort?: string) {
     let params = new HttpParams();
     if (admin) {
       params = params.set('admin', '1');
+    }
+    if (limit !== undefined && limit !== null) {
+      params = params.set('limit', String(limit));
+    }
+    if (sort) {
+      params = params.set('sort', sort);
     }
     return this.http.get<{ products: Product[] }>(`${API_BASE}/products`, { params });
   }

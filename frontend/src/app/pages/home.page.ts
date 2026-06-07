@@ -3,13 +3,17 @@ import { Component, computed, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { CartService } from '../core/cart.service';
+import { ToastService } from '../core/toast.service';
+import { AuthService } from '../core/auth.service';
+import { Router } from '@angular/router';
 import { ProductService } from '../core/product.service';
 import { Product } from '../models/types';
+import { ProductCardComponent } from '../components/product-card.component';
 
 @Component({
   selector: 'app-home-page',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterLink, CurrencyPipe],
+  imports: [CommonModule, FormsModule, RouterLink, CurrencyPipe, ProductCardComponent],
   template: `
     <section class="hero">
       <p class="eyebrow">Handmade. Heartmade.</p>
@@ -23,19 +27,7 @@ import { Product } from '../models/types';
     </section>
 
     <section class="grid">
-      <article class="card" *ngFor="let product of filteredProducts()">
-        <img [src]="product.image_url" [alt]="product.name" />
-        <h3>{{ product.name }}</h3>
-        <p>{{ product.description }}</p>
-        <div class="meta">
-          <strong>{{ product.price | currency:'PHP':'symbol':'1.2-2' }}</strong>
-          <span>Stock: {{ product.stock }}</span>
-        </div>
-        <div class="actions">
-          <a [routerLink]="['/product', product.id]">Details</a>
-          <button type="button" (click)="add(product)">Add to cart</button>
-        </div>
-      </article>
+      <app-product-card *ngFor="let product of filteredProducts()" [product]="product" (add)="add($event)"></app-product-card>
     </section>
   `,
   styles: [
@@ -70,7 +62,13 @@ export class HomePageComponent {
     );
   });
 
-  constructor(private productService: ProductService, private cart: CartService) {
+  constructor(
+    private productService: ProductService,
+    private cart: CartService,
+    private auth: AuthService,
+    private router: Router,
+    private toast: ToastService
+  ) {
     this.reload();
   }
 
@@ -79,6 +77,13 @@ export class HomePageComponent {
   }
 
   add(product: Product) {
-    this.cart.add(product, 1);
+    if (this.auth.isAuthenticated()) {
+      this.cart.add(product, 1);
+      return;
+    }
+
+    // Not authenticated — show toast and redirect to login with returnUrl
+    this.toast.show('Please log in to add items to your cart 🧺', 'info');
+    this.router.navigate(['/login'], { queryParams: { returnUrl: this.router.url } });
   }
 }

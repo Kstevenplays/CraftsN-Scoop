@@ -1,7 +1,9 @@
 import { CommonModule, CurrencyPipe } from '@angular/common';
 import { Component, signal } from '@angular/core';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ActivatedRoute, RouterLink, Router } from '@angular/router';
 import { CartService } from '../core/cart.service';
+import { ToastService } from '../core/toast.service';
+import { AuthService } from '../core/auth.service';
 import { ProductService } from '../core/product.service';
 import { Product } from '../models/types';
 
@@ -39,13 +41,22 @@ export class ProductDetailPageComponent {
   constructor(
     route: ActivatedRoute,
     private productService: ProductService,
-    private cart: CartService
+    private cart: CartService,
+    private auth: AuthService,
+    private router: Router,
+    private toast: ToastService
   ) {
     const id = Number(route.snapshot.paramMap.get('id'));
     this.productService.getProduct(id).subscribe((res) => this.product.set(res.product));
   }
 
   addToCart(product: Product) {
-    this.cart.add(product);
+    if (this.auth.isAuthenticated()) {
+      this.cart.add(product);
+      return;
+    }
+
+    this.toast.show('Please log in to add items to your cart 🧺', 'info');
+    this.router.navigate(['/login'], { queryParams: { returnUrl: this.router.url } });
   }
 }

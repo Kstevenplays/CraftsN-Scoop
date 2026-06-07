@@ -9,11 +9,13 @@ import { LoginPageComponent } from './pages/login.page';
 import { OrdersPageComponent } from './pages/orders.page';
 import { ProductDetailPageComponent } from './pages/product-detail.page';
 import { RegisterPageComponent } from './pages/register.page';
+import { LandingPageComponent } from './pages/landing.page';
 
 export const routes: Routes = [
-	{ path: '', component: HomePageComponent },
+	{ path: '', component: LandingPageComponent },
+	{ path: 'shop', component: HomePageComponent },
 	{ path: 'product/:id', component: ProductDetailPageComponent },
-	{ path: 'cart', component: CartPageComponent },
+	{ path: 'cart', component: CartPageComponent, canActivate: [authGuard] },
 	{ path: 'checkout', component: CheckoutPageComponent, canActivate: [authGuard] },
 	{ path: 'orders', component: OrdersPageComponent, canActivate: [authGuard] },
 	{ path: 'login', component: LoginPageComponent },

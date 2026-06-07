@@ -106,12 +106,34 @@ $app->group('/api', function (RouteCollectorProxy $api) use ($pdo, $auth, $jwtMi
         $queryParams = $request->getQueryParams();
         $admin = ($queryParams['admin'] ?? '') === '1';
 
-        if ($admin) {
-            $stmt = $pdo->query('SELECT * FROM products ORDER BY id DESC');
-        } else {
-            $stmt = $pdo->query('SELECT * FROM products WHERE is_active = 1 ORDER BY id DESC');
+        $where = '';
+        if (!$admin) {
+            $where = 'WHERE is_active = 1';
         }
 
+        // determine order
+        $sort = (string) ($queryParams['sort'] ?? '');
+        $orderBy = 'ORDER BY id DESC';
+        if ($sort === 'created_at') {
+            $orderBy = 'ORDER BY created_at DESC';
+        }
+
+        // limit (safe integer, capped)
+        $limit = 0;
+        if (isset($queryParams['limit'])) {
+            $limit = (int) $queryParams['limit'];
+            if ($limit < 0) {
+                $limit = 0;
+            }
+            $limit = min($limit, 100);
+        }
+
+        $sql = sprintf('SELECT * FROM products %s %s', $where, $orderBy);
+        if ($limit > 0) {
+            $sql .= ' LIMIT ' . $limit;
+        }
+
+        $stmt = $pdo->query($sql);
         $products = $stmt->fetchAll();
         return json($response, ['products' => $products]);
     });
