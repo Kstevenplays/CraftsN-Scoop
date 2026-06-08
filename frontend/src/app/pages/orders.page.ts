@@ -34,12 +34,15 @@ import { OrderTimelineComponent } from './order-timeline.component';
   `,
   styles: [
     `.list{display:grid;gap:.8rem}`,
-    `.order{background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:.9rem}`,
+    `.order{background:var(--cns-card);border:1px solid var(--cns-border);border-radius:var(--cns-radius);padding:.95rem;box-shadow:var(--cns-shadow)}`,
     `header{display:flex;justify-content:space-between;align-items:center}`,
-    `.status{text-transform:capitalize;background:#dbeafe;color:#1e3a8a;padding:.2rem .55rem;border-radius:999px;font-size:.8rem}`,
+    `.status{text-transform:capitalize;background:var(--cns-cream-strong);color:var(--cns-coral);border:1px solid rgba(232,99,58,.25);padding:.25rem .6rem;border-radius:999px;font-size:.8rem;font-weight:900}`,
+    `.order h3{margin:0;color:var(--cns-brown);letter-spacing:0}`,
+    `.order p{margin:.35rem 0;color:var(--cns-brown-soft)}`,
     `details{margin-top:.4rem}`,
-    `summary{cursor:pointer;color:#0f766e;font-weight:700}`,
+    `summary{cursor:pointer;color:var(--cns-coral);font-weight:900}`,
     `ul{margin:0;padding-left:1.1rem}`,
+    `li{color:var(--cns-brown-soft);line-height:1.5}`,
   ],
 })
 export class OrdersPageComponent {

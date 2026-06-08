@@ -43,7 +43,7 @@ export class AuthService {
     this.userSignal.set(null);
     localStorage.removeItem('cns_token');
     localStorage.removeItem('cns_user');
-    this.router.navigateByUrl('/login');
+    this.router.navigateByUrl('/');
   }
 
   private persistAuth(res: AuthResponse) {

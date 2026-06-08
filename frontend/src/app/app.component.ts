@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterOutlet } from '@angular/router';
+import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { ToastComponent } from './components/toast.component';
 import { AuthService } from './core/auth.service';
 import { CartService } from './core/cart.service';
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-root',
@@ -14,9 +15,22 @@ import { CartService } from './core/cart.service';
   styleUrl: './app.component.css'
 })
 export class AppComponent {
-  constructor(public auth: AuthService, public cart: CartService) {
+  currentUrl = '/';
+
+  constructor(public auth: AuthService, public cart: CartService, private router: Router) {
+    this.currentUrl = this.router.url.split('?')[0];
+    this.router.events
+      .pipe(filter((event): event is NavigationEnd => event instanceof NavigationEnd))
+      .subscribe((event) => {
+        this.currentUrl = event.urlAfterRedirects.split('?')[0];
+      });
+
     if (this.auth.token()) {
       this.auth.fetchMe().subscribe({ error: () => this.auth.logout() });
     }
+  }
+
+  showNavbar() {
+    return this.currentUrl !== '/';
   }
 }

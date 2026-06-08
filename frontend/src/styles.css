@@ -1,5 +1,14 @@
 :root {
 	color-scheme: light;
+	--cns-cream: #fff8f0;
+	--cns-cream-strong: #fff1e6;
+	--cns-coral: #e8633a;
+	--cns-brown: #3b1f0e;
+	--cns-brown-soft: #7a4a2e;
+	--cns-card: #ffffff;
+	--cns-border: rgba(59, 31, 14, 0.14);
+	--cns-shadow: 0 18px 48px rgba(59, 31, 14, 0.1);
+	--cns-radius: 0.5rem;
 }
 
 * {
@@ -11,12 +20,9 @@ body {
 	margin: 0;
 	padding: 0;
 	min-height: 100%;
-	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-	color: #111827;
-	background:
-		radial-gradient(circle at 10% 0%, rgba(251, 191, 36, 0.18), transparent 35%),
-		radial-gradient(circle at 90% 10%, rgba(16, 185, 129, 0.15), transparent 35%),
-		#f8fafc;
+	font-family: 'Plus Jakarta Sans', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+	color: var(--cns-brown);
+	background: var(--cns-cream);
 }
 
 h1,
@@ -24,4 +30,38 @@ h2,
 h3,
 p {
 	margin-top: 0;
+}
+
+h1,
+h2,
+h3 {
+	color: var(--cns-brown);
+	letter-spacing: 0;
+}
+
+p {
+	color: var(--cns-brown-soft);
+	line-height: 1.55;
+}
+
+button,
+input,
+textarea,
+select {
+	font: inherit;
+}
+
+.cart-flyer {
+	position: fixed;
+	z-index: 2000;
+	width: 1.65rem;
+	height: 1.65rem;
+	display: grid;
+	place-items: center;
+	border-radius: 999px;
+	background: var(--cns-coral);
+	color: #ffffff;
+	font-weight: 900;
+	box-shadow: 0 12px 28px rgba(232, 99, 58, 0.28);
+	pointer-events: none;
 }

@@ -1,0 +1,241 @@
+[Mon Jun  8 22:43:50 2026] PHP 8.2.12 Development Server (http://127.0.0.1:8080) started
+[Mon Jun  8 22:44:25 2026] 127.0.0.1:60915 Accepted
+[Mon Jun  8 22:44:28 2026] 127.0.0.1:60915 [200]: GET /health
+[Mon Jun  8 22:44:28 2026] 127.0.0.1:60915 Closing
+[Mon Jun  8 22:46:10 2026] 127.0.0.1:61714 Accepted
+[Mon Jun  8 22:46:10 2026] 127.0.0.1:61714 [200]: GET /api/products
+[Mon Jun  8 22:46:10 2026] 127.0.0.1:61714 Closing
+[Mon Jun  8 22:47:29 2026] 127.0.0.1:64123 Accepted
+[Mon Jun  8 22:47:29 2026] 127.0.0.1:64123 [200]: GET /api/products?limit=6&sort=created_at
+[Mon Jun  8 22:47:29 2026] 127.0.0.1:64123 Closing
+[Mon Jun  8 22:49:56 2026] 127.0.0.1:56888 Accepted
+[Mon Jun  8 22:49:56 2026] 127.0.0.1:56888 [200]: GET /api/products?limit=6&sort=created_at
+[Mon Jun  8 22:49:56 2026] 127.0.0.1:56888 Closing
+[Mon Jun  8 22:50:08 2026] 127.0.0.1:58725 Accepted
+[Mon Jun  8 22:50:08 2026] 127.0.0.1:58725 [200]: GET /api/products?limit=6&sort=created_at
+[Mon Jun  8 22:50:08 2026] 127.0.0.1:58725 Closing
+[Mon Jun  8 22:50:20 2026] 127.0.0.1:60873 Accepted
+[Mon Jun  8 22:50:20 2026] 127.0.0.1:60873 [200]: GET /api/products?limit=6&sort=created_at
+[Mon Jun  8 22:50:20 2026] 127.0.0.1:60873 Closing
+[Mon Jun  8 22:50:30 2026] 127.0.0.1:56201 Accepted
+[Mon Jun  8 22:50:30 2026] 127.0.0.1:56201 [200]: GET /api/products?limit=6&sort=created_at
+[Mon Jun  8 22:50:30 2026] 127.0.0.1:56201 Closing
+[Mon Jun  8 22:50:35 2026] 127.0.0.1:55915 Accepted
+[Mon Jun  8 22:50:35 2026] 127.0.0.1:55915 [200]: GET /api/products?limit=6&sort=created_at
+[Mon Jun  8 22:50:35 2026] 127.0.0.1:55915 Closing
+[Mon Jun  8 22:57:13 2026] 127.0.0.1:61639 Accepted
+[Mon Jun  8 22:57:13 2026] 127.0.0.1:61639 [200]: GET /api/products
+[Mon Jun  8 22:57:13 2026] 127.0.0.1:61639 Closing
+[Mon Jun  8 22:58:33 2026] 127.0.0.1:52760 Accepted
+[Mon Jun  8 22:58:34 2026] 127.0.0.1:52760 [200]: POST /api/auth/login
+[Mon Jun  8 22:58:34 2026] 127.0.0.1:52760 Closing
+[Mon Jun  8 22:58:34 2026] 127.0.0.1:60452 Accepted
+[Mon Jun  8 22:58:34 2026] 127.0.0.1:60452 [200]: GET /api/products
+[Mon Jun  8 22:58:34 2026] 127.0.0.1:60452 Closing
+[Mon Jun  8 23:01:35 2026] 127.0.0.1:54000 Accepted
+[Mon Jun  8 23:01:35 2026] 127.0.0.1:54000 [200]: POST /api/auth/login
+[Mon Jun  8 23:01:35 2026] 127.0.0.1:54000 Closing
+[Mon Jun  8 23:01:35 2026] 127.0.0.1:61072 Accepted
+[Mon Jun  8 23:01:35 2026] 127.0.0.1:61072 [200]: GET /api/products
+[Mon Jun  8 23:01:35 2026] 127.0.0.1:61072 Closing
+[Mon Jun  8 23:11:36 2026] 127.0.0.1:60163 Accepted
+[Mon Jun  8 23:11:36 2026] 127.0.0.1:60163 [200]: GET /api/products
+[Mon Jun  8 23:11:36 2026] 127.0.0.1:60163 Closing
+[Mon Jun  8 23:17:06 2026] 127.0.0.1:56513 Accepted
+[Mon Jun  8 23:17:06 2026] 127.0.0.1:56513 [200]: GET /api/me
+[Mon Jun  8 23:17:06 2026] 127.0.0.1:56513 Closing
+[Mon Jun  8 23:17:06 2026] 127.0.0.1:56514 Accepted
+[Mon Jun  8 23:17:06 2026] 127.0.0.1:56514 [200]: GET /api/products
+[Mon Jun  8 23:17:06 2026] 127.0.0.1:56514 Closing
+[Mon Jun  8 23:17:13 2026] 127.0.0.1:57056 Accepted
+[Mon Jun  8 23:17:13 2026] 127.0.0.1:57056 [200]: GET /api/products
+[Mon Jun  8 23:17:13 2026] 127.0.0.1:57056 Closing
+[Mon Jun  8 23:17:14 2026] 127.0.0.1:61312 Accepted
+[Mon Jun  8 23:17:14 2026] 127.0.0.1:61312 [200]: GET /api/orders/me
+[Mon Jun  8 23:17:14 2026] 127.0.0.1:61312 Closing
+[Mon Jun  8 23:17:15 2026] 127.0.0.1:64938 Accepted
+[Mon Jun  8 23:17:15 2026] 127.0.0.1:64938 [200]: GET /api/products
+[Mon Jun  8 23:17:15 2026] 127.0.0.1:64938 Closing
+[Mon Jun  8 23:18:17 2026] 127.0.0.1:51815 Accepted
+[Mon Jun  8 23:18:17 2026] 127.0.0.1:51815 [200]: GET /api/products
+[Mon Jun  8 23:18:17 2026] 127.0.0.1:51815 Closing
+[Mon Jun  8 23:18:23 2026] 127.0.0.1:52142 Accepted
+[Mon Jun  8 23:18:23 2026] 127.0.0.1:52142 [200]: GET /api/products
+[Mon Jun  8 23:18:23 2026] 127.0.0.1:52142 Closing
+[Mon Jun  8 23:20:41 2026] 127.0.0.1:61346 Accepted
+[Mon Jun  8 23:20:41 2026] 127.0.0.1:61346 [200]: GET /api/products
+[Mon Jun  8 23:20:41 2026] 127.0.0.1:61346 Closing
+[Mon Jun  8 23:21:35 2026] 127.0.0.1:51051 Accepted
+[Mon Jun  8 23:21:36 2026] 127.0.0.1:51051 [200]: GET /api/me
+[Mon Jun  8 23:21:36 2026] 127.0.0.1:51051 Closing
+[Mon Jun  8 23:21:36 2026] 127.0.0.1:51052 Accepted
+[Mon Jun  8 23:21:36 2026] 127.0.0.1:51052 [200]: GET /api/products
+[Mon Jun  8 23:21:36 2026] 127.0.0.1:51052 Closing
+[Mon Jun  8 23:21:50 2026] 127.0.0.1:53645 Accepted
+[Mon Jun  8 23:21:50 2026] 127.0.0.1:53645 [200]: GET /api/orders/me
+[Mon Jun  8 23:21:50 2026] 127.0.0.1:53645 Closing
+[Mon Jun  8 23:22:15 2026] 127.0.0.1:61867 Accepted
+[Mon Jun  8 23:22:16 2026] 127.0.0.1:61867 [200]: POST /api/auth/login
+[Mon Jun  8 23:22:16 2026] 127.0.0.1:61867 Closing
+[Mon Jun  8 23:22:16 2026] 127.0.0.1:55312 Accepted
+[Mon Jun  8 23:22:16 2026] 127.0.0.1:55312 [200]: GET /api/products
+[Mon Jun  8 23:22:16 2026] 127.0.0.1:55312 Closing
+[Mon Jun  8 23:22:19 2026] 127.0.0.1:61900 Accepted
+[Mon Jun  8 23:22:19 2026] 127.0.0.1:61900 [200]: GET /api/orders/me
+[Mon Jun  8 23:22:19 2026] 127.0.0.1:61900 Closing
+[Mon Jun  8 23:22:23 2026] 127.0.0.1:52950 Accepted
+[Mon Jun  8 23:22:23 2026] 127.0.0.1:52950 [200]: GET /api/products
+[Mon Jun  8 23:22:23 2026] 127.0.0.1:52950 Closing
+[Mon Jun  8 23:22:25 2026] 127.0.0.1:60111 Accepted
+[Mon Jun  8 23:22:25 2026] 127.0.0.1:60112 Accepted
+[Mon Jun  8 23:22:25 2026] 127.0.0.1:60111 [200]: GET /api/products?admin=1
+[Mon Jun  8 23:22:25 2026] 127.0.0.1:60111 Closing
+[Mon Jun  8 23:22:25 2026] 127.0.0.1:60112 [200]: GET /api/admin/orders
+[Mon Jun  8 23:22:25 2026] 127.0.0.1:60112 Closing
+[Mon Jun  8 23:22:35 2026] 127.0.0.1:49305 Accepted
+[Mon Jun  8 23:22:35 2026] 127.0.0.1:49305 [200]: GET /api/orders/me
+[Mon Jun  8 23:22:35 2026] 127.0.0.1:49305 Closing
+[Mon Jun  8 23:22:39 2026] 127.0.0.1:62463 Accepted
+[Mon Jun  8 23:22:39 2026] 127.0.0.1:62463 [200]: GET /api/products
+[Mon Jun  8 23:22:39 2026] 127.0.0.1:62463 Closing
+[Mon Jun  8 23:22:50 2026] 127.0.0.1:59276 Accepted
+[Mon Jun  8 23:22:50 2026] 127.0.0.1:59276 [201]: POST /api/orders
+[Mon Jun  8 23:22:50 2026] 127.0.0.1:59276 Closing
+[Mon Jun  8 23:22:51 2026] 127.0.0.1:52407 Accepted
+[Mon Jun  8 23:22:51 2026] 127.0.0.1:52407 [200]: GET /api/orders/me
+[Mon Jun  8 23:22:51 2026] 127.0.0.1:52407 Closing
+[Mon Jun  8 23:22:58 2026] 127.0.0.1:56831 Accepted
+[Mon Jun  8 23:22:58 2026] 127.0.0.1:56831 [200]: GET /api/orders/me
+[Mon Jun  8 23:22:58 2026] 127.0.0.1:56831 Closing
+[Mon Jun  8 23:23:00 2026] 127.0.0.1:53653 Accepted
+[Mon Jun  8 23:23:00 2026] 127.0.0.1:53653 [200]: GET /api/me
+[Mon Jun  8 23:23:00 2026] 127.0.0.1:53653 Closing
+[Mon Jun  8 23:23:00 2026] 127.0.0.1:53654 Accepted
+[Mon Jun  8 23:23:00 2026] 127.0.0.1:53654 [200]: GET /api/orders/me
+[Mon Jun  8 23:23:00 2026] 127.0.0.1:53654 Closing
+[Mon Jun  8 23:23:01 2026] 127.0.0.1:49683 Accepted
+[Mon Jun  8 23:23:01 2026] 127.0.0.1:49684 Accepted
+[Mon Jun  8 23:23:01 2026] 127.0.0.1:49683 [200]: GET /api/products?admin=1
+[Mon Jun  8 23:23:01 2026] 127.0.0.1:49683 Closing
+[Mon Jun  8 23:23:01 2026] 127.0.0.1:49684 [200]: GET /api/admin/orders
+[Mon Jun  8 23:23:01 2026] 127.0.0.1:49684 Closing
+[Mon Jun  8 23:23:08 2026] 127.0.0.1:53210 Accepted
+[Mon Jun  8 23:23:08 2026] 127.0.0.1:53210 [200]: PATCH /api/admin/orders/1/status
+[Mon Jun  8 23:23:08 2026] 127.0.0.1:53210 Closing
+[Mon Jun  8 23:23:08 2026] 127.0.0.1:52083 Accepted
+[Mon Jun  8 23:23:08 2026] 127.0.0.1:52083 [200]: GET /api/admin/orders
+[Mon Jun  8 23:23:08 2026] 127.0.0.1:52083 Closing
+[Mon Jun  8 23:23:10 2026] 127.0.0.1:50640 Accepted
+[Mon Jun  8 23:23:10 2026] 127.0.0.1:50640 [200]: GET /api/me
+[Mon Jun  8 23:23:10 2026] 127.0.0.1:50640 Closing
+[Mon Jun  8 23:23:10 2026] 127.0.0.1:50641 Accepted
+[Mon Jun  8 23:23:10 2026] 127.0.0.1:50641 [200]: GET /api/orders/me
+[Mon Jun  8 23:23:10 2026] 127.0.0.1:50641 Closing
+[Mon Jun  8 23:23:17 2026] 127.0.0.1:52944 Accepted
+[Mon Jun  8 23:23:17 2026] 127.0.0.1:52944 [200]: GET /api/me
+[Mon Jun  8 23:23:17 2026] 127.0.0.1:52944 Closing
+[Mon Jun  8 23:23:17 2026] 127.0.0.1:51986 Accepted
+[Mon Jun  8 23:23:17 2026] 127.0.0.1:51986 [200]: GET /api/me
+[Mon Jun  8 23:23:17 2026] 127.0.0.1:51986 Closing
+[Mon Jun  8 23:23:23 2026] 127.0.0.1:51988 Accepted
+[Mon Jun  8 23:23:23 2026] 127.0.0.1:51988 [200]: POST /api/auth/login
+[Mon Jun  8 23:23:23 2026] 127.0.0.1:51988 Closing
+[Mon Jun  8 23:23:23 2026] 127.0.0.1:57186 Accepted
+[Mon Jun  8 23:23:23 2026] 127.0.0.1:57186 [200]: GET /api/products
+[Mon Jun  8 23:23:23 2026] 127.0.0.1:57186 Closing
+[Mon Jun  8 23:23:26 2026] 127.0.0.1:55648 Accepted
+[Mon Jun  8 23:23:26 2026] 127.0.0.1:55648 [200]: GET /api/orders/me
+[Mon Jun  8 23:23:26 2026] 127.0.0.1:55648 Closing
+[Mon Jun  8 23:23:50 2026] 127.0.0.1:60702 Accepted
+[Mon Jun  8 23:23:50 2026] 127.0.0.1:60702 [200]: PATCH /api/admin/orders/1/status
+[Mon Jun  8 23:23:50 2026] 127.0.0.1:60702 Closing
+[Mon Jun  8 23:23:50 2026] 127.0.0.1:55426 Accepted
+[Mon Jun  8 23:23:51 2026] 127.0.0.1:55426 [200]: GET /api/admin/orders
+[Mon Jun  8 23:23:51 2026] 127.0.0.1:55426 Closing
+[Mon Jun  8 23:23:54 2026] 127.0.0.1:49380 Accepted
+[Mon Jun  8 23:23:54 2026] 127.0.0.1:49380 [200]: GET /api/me
+[Mon Jun  8 23:23:54 2026] 127.0.0.1:49380 Closing
+[Mon Jun  8 23:23:54 2026] 127.0.0.1:49381 Accepted
+[Mon Jun  8 23:23:54 2026] 127.0.0.1:49381 [200]: GET /api/orders/me
+[Mon Jun  8 23:23:54 2026] 127.0.0.1:49381 Closing
+[Mon Jun  8 23:24:00 2026] 127.0.0.1:50811 Accepted
+[Mon Jun  8 23:24:00 2026] 127.0.0.1:50811 [200]: GET /api/products
+[Mon Jun  8 23:24:00 2026] 127.0.0.1:50811 Closing
+[Mon Jun  8 23:24:48 2026] 127.0.0.1:51995 Accepted
+[Mon Jun  8 23:24:48 2026] 127.0.0.1:51995 [200]: GET /api/products
+[Mon Jun  8 23:24:48 2026] 127.0.0.1:51995 Closing
+[Mon Jun  8 23:25:17 2026] 127.0.0.1:53964 Accepted
+[Mon Jun  8 23:25:17 2026] 127.0.0.1:53964 [200]: GET /api/me
+[Mon Jun  8 23:25:17 2026] 127.0.0.1:53964 Closing
+[Mon Jun  8 23:25:17 2026] 127.0.0.1:53965 Accepted
+[Mon Jun  8 23:25:17 2026] 127.0.0.1:53965 [200]: GET /api/products
+[Mon Jun  8 23:25:17 2026] 127.0.0.1:53965 Closing
+[Mon Jun  8 23:25:54 2026] 127.0.0.1:65203 Accepted
+[Mon Jun  8 23:25:54 2026] 127.0.0.1:65203 [200]: GET /api/me
+[Mon Jun  8 23:25:54 2026] 127.0.0.1:65203 Closing
+[Mon Jun  8 23:25:54 2026] 127.0.0.1:65204 Accepted
+[Mon Jun  8 23:25:54 2026] 127.0.0.1:65204 [200]: GET /api/orders/me
+[Mon Jun  8 23:25:54 2026] 127.0.0.1:65204 Closing
+[Mon Jun  8 23:27:49 2026] 127.0.0.1:57848 Accepted
+[Mon Jun  8 23:27:49 2026] 127.0.0.1:57848 [200]: GET /api/me
+[Mon Jun  8 23:27:49 2026] 127.0.0.1:57848 Closing
+[Mon Jun  8 23:27:49 2026] 127.0.0.1:57849 Accepted
+[Mon Jun  8 23:27:49 2026] 127.0.0.1:57849 [200]: GET /api/products
+[Mon Jun  8 23:27:49 2026] 127.0.0.1:57849 Closing
+[Mon Jun  8 23:27:52 2026] 127.0.0.1:52015 Accepted
+[Mon Jun  8 23:27:52 2026] 127.0.0.1:52015 [200]: GET /api/me
+[Mon Jun  8 23:27:52 2026] 127.0.0.1:52015 Closing
+[Mon Jun  8 23:27:52 2026] 127.0.0.1:52016 Accepted
+[Mon Jun  8 23:27:52 2026] 127.0.0.1:52016 [200]: GET /api/orders/me
+[Mon Jun  8 23:27:52 2026] 127.0.0.1:52016 Closing
+[Mon Jun  8 23:27:54 2026] 127.0.0.1:52017 Accepted
+[Mon Jun  8 23:27:54 2026] 127.0.0.1:52017 [200]: GET /api/products
+[Mon Jun  8 23:27:54 2026] 127.0.0.1:52017 Closing
+[Mon Jun  8 23:28:06 2026] 127.0.0.1:57488 Accepted
+[Mon Jun  8 23:28:06 2026] 127.0.0.1:57489 Accepted
+[Mon Jun  8 23:28:06 2026] 127.0.0.1:57488 [200]: GET /api/me
+[Mon Jun  8 23:28:06 2026] 127.0.0.1:57488 Closing
+[Mon Jun  8 23:28:06 2026] 127.0.0.1:57489 [200]: GET /api/products
+[Mon Jun  8 23:28:06 2026] 127.0.0.1:57489 Closing
+[Mon Jun  8 23:28:10 2026] 127.0.0.1:57490 Accepted
+[Mon Jun  8 23:28:10 2026] 127.0.0.1:57490 [200]: GET /api/orders/me
+[Mon Jun  8 23:28:10 2026] 127.0.0.1:57490 Closing
+[Mon Jun  8 23:30:47 2026] 127.0.0.1:62578 Accepted
+[Mon Jun  8 23:30:47 2026] 127.0.0.1:62578 [200]: POST /api/auth/login
+[Mon Jun  8 23:30:47 2026] 127.0.0.1:62578 Closing
+[Mon Jun  8 23:30:47 2026] 127.0.0.1:49490 Accepted
+[Mon Jun  8 23:30:47 2026] 127.0.0.1:49490 [200]: GET /api/products
+[Mon Jun  8 23:30:47 2026] 127.0.0.1:49490 Closing
+[Mon Jun  8 23:30:50 2026] 127.0.0.1:64899 Accepted
+[Mon Jun  8 23:30:50 2026] 127.0.0.1:64899 [200]: GET /api/products?admin=1
+[Mon Jun  8 23:30:50 2026] 127.0.0.1:64899 Closing
+[Mon Jun  8 23:30:50 2026] 127.0.0.1:64900 Accepted
+[Mon Jun  8 23:30:50 2026] 127.0.0.1:64900 [200]: GET /api/admin/orders
+[Mon Jun  8 23:30:50 2026] 127.0.0.1:64900 Closing
+[Mon Jun  8 23:30:54 2026] 127.0.0.1:62518 Accepted
+[Mon Jun  8 23:30:54 2026] 127.0.0.1:62518 [200]: PATCH /api/admin/orders/1/status
+[Mon Jun  8 23:30:54 2026] 127.0.0.1:62518 Closing
+[Mon Jun  8 23:30:54 2026] 127.0.0.1:65102 Accepted
+[Mon Jun  8 23:30:54 2026] 127.0.0.1:65102 [200]: GET /api/admin/orders
+[Mon Jun  8 23:30:54 2026] 127.0.0.1:65102 Closing
+[Mon Jun  8 23:31:08 2026] 127.0.0.1:51596 Accepted
+[Mon Jun  8 23:31:08 2026] 127.0.0.1:51596 [200]: GET /api/products
+[Mon Jun  8 23:31:08 2026] 127.0.0.1:51596 Closing
+[Mon Jun  8 23:31:14 2026] 127.0.0.1:64097 Accepted
+[Mon Jun  8 23:31:14 2026] 127.0.0.1:64097 [200]: GET /api/me
+[Mon Jun  8 23:31:14 2026] 127.0.0.1:64097 Closing
+[Mon Jun  8 23:31:14 2026] 127.0.0.1:64098 Accepted
+[Mon Jun  8 23:31:14 2026] 127.0.0.1:64098 [200]: GET /api/orders/me
+[Mon Jun  8 23:31:14 2026] 127.0.0.1:64098 Closing
+[Mon Jun  8 23:31:19 2026] 127.0.0.1:64099 Accepted
+[Mon Jun  8 23:31:19 2026] 127.0.0.1:64099 [401]: POST /api/auth/login
+[Mon Jun  8 23:31:19 2026] 127.0.0.1:64099 Closing
+[Mon Jun  8 23:31:28 2026] 127.0.0.1:63819 Accepted
+[Mon Jun  8 23:31:28 2026] 127.0.0.1:63819 [200]: POST /api/auth/login
+[Mon Jun  8 23:31:28 2026] 127.0.0.1:63819 Closing
+[Mon Jun  8 23:31:28 2026] 127.0.0.1:58074 Accepted
+[Mon Jun  8 23:31:28 2026] 127.0.0.1:58074 [200]: GET /api/products
+[Mon Jun  8 23:31:28 2026] 127.0.0.1:58074 Closing
+[Mon Jun  8 23:31:30 2026] 127.0.0.1:58502 Accepted
+[Mon Jun  8 23:31:30 2026] 127.0.0.1:58502 [200]: GET /api/orders/me
+[Mon Jun  8 23:31:30 2026] 127.0.0.1:58502 Closing

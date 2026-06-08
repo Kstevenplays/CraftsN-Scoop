@@ -38,13 +38,17 @@ import { OrderService } from '../core/order.service';
     </form>
   `,
   styles: [
-    `.form{background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:1rem;max-width:640px;display:grid;gap:.8rem}`,
-    `label{display:grid;gap:.35rem;font-weight:600}`,
-    `input,textarea{padding:.65rem .75rem;border-radius:10px;border:1px solid #cdd4db;font:inherit}`,
+    `.form{background:var(--cns-card);border:1px solid var(--cns-border);border-radius:var(--cns-radius);box-shadow:var(--cns-shadow);padding:1rem;max-width:640px;display:grid;gap:.8rem}`,
+    `label{display:grid;gap:.35rem;font-weight:900;color:var(--cns-brown)}`,
+    `input,textarea{padding:.7rem .85rem;border-radius:.45rem;border:1px solid var(--cns-border);background:#fffaf5;color:var(--cns-brown);font:inherit;outline:none}`,
+    `input:focus,textarea:focus{border-color:var(--cns-coral);box-shadow:0 0 0 3px rgba(232,99,58,.16);background:#fff}`,
     `textarea{min-height:110px;resize:vertical}`,
-    `.summary{background:#f8fafc;border-radius:10px;padding:.8rem}`,
-    `button{border:0;background:#0f766e;color:#fff;padding:.7rem 1rem;border-radius:10px}`,
-    `.msg{font-weight:600}`,
+    `.summary{background:var(--cns-cream-strong);border:1px solid var(--cns-border);border-radius:.45rem;padding:.8rem}`,
+    `.summary p{margin:.1rem 0;color:var(--cns-brown-soft)}`,
+    `.summary strong{color:var(--cns-brown)}`,
+    `button{border:0;background:var(--cns-coral);color:#fff;padding:.75rem 1rem;border-radius:.45rem;font-weight:900;cursor:pointer}`,
+    `button:disabled{opacity:.65;cursor:not-allowed}`,
+    `.msg{font-weight:900;color:var(--cns-brown)}`,
   ],
 })
 export class CheckoutPageComponent {
@@ -80,7 +84,7 @@ export class CheckoutPageComponent {
           this.cart.clear();
           this.loading = false;
           this.message = `Order #${res.order_id} placed successfully.`;
-          setTimeout(() => this.router.navigateByUrl('/orders'), 700);
+          setTimeout(() => this.router.navigateByUrl('/orders/my'), 700);
         },
         error: (err) => {
           this.loading = false;

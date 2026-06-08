@@ -1,17 +1,16 @@
-<header class="topbar">
-  <a routerLink="/" class="brand">Crafts N Scoop</a>
+<header class="topbar" *ngIf="showNavbar()">
+  <a routerLink="/shop" class="brand">Crafts N' Scoop</a>
 
   <nav>
-    <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Shop</a>
-    <a routerLink="/cart" routerLinkActive="active">Cart ({{ cart.count() }})</a>
-    <a *ngIf="auth.isAuthenticated()" routerLink="/orders" routerLinkActive="active">Orders</a>
+    <a routerLink="/shop" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Shop</a>
+    <a routerLink="/cart" routerLinkActive="active" class="cart-link">Cart ({{ cart.count() }})</a>
+    <a *ngIf="auth.isAuthenticated()" routerLink="/orders/my" routerLinkActive="active">Orders</a>
     <a *ngIf="auth.isAdmin()" routerLink="/admin" routerLinkActive="active">Admin</a>
-    <a *ngIf="!auth.isAuthenticated()" routerLink="/login" routerLinkActive="active">Login</a>
     <button *ngIf="auth.isAuthenticated()" type="button" (click)="auth.logout()">Logout</button>
   </nav>
 </header>
 
-<main class="page">
+<main class="page" [class.auth-page]="!showNavbar()">
   <router-outlet></router-outlet>
 </main>
 

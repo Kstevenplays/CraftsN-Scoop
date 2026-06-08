@@ -6,16 +6,17 @@
 	align-items: center;
 	justify-content: space-between;
 	padding: 0.85rem 1rem;
-	border-bottom: 1px solid #e5e7eb;
+	border-bottom: 1px solid var(--cns-border);
 	backdrop-filter: blur(10px);
-	background: color-mix(in srgb, #fff 85%, #fef3c7 15%);
+	background: color-mix(in srgb, var(--cns-card) 88%, var(--cns-cream-strong) 12%);
+	box-shadow: 0 8px 24px rgba(59, 31, 14, 0.06);
 }
 
 .brand {
 	text-decoration: none;
-	color: #111827;
-	font-weight: 800;
-	letter-spacing: 0.01em;
+	color: var(--cns-brown);
+	font-weight: 900;
+	letter-spacing: 0;
 }
 
 nav {
@@ -29,24 +30,32 @@ nav button {
 	border: 0;
 	background: transparent;
 	text-decoration: none;
-	color: #374151;
+	color: var(--cns-brown-soft);
 	font: inherit;
-	font-weight: 600;
+	font-weight: 800;
 	cursor: pointer;
 }
 
 nav a.active {
-	color: #0f766e;
+	color: var(--cns-coral);
 }
 
 nav button {
-	color: #b91c1c;
+	color: var(--cns-coral);
 }
 
 .page {
 	padding: 1rem;
 	max-width: 1100px;
 	margin: 0 auto;
+	background: var(--cns-cream);
+}
+
+.page.auth-page {
+	min-height: 100vh;
+	max-width: none;
+	padding: 0;
+	background: var(--cns-cream);
 }
 
 @media (max-width: 820px) {
