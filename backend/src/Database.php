@@ -39,15 +39,24 @@ final class Database
                 email TEXT NOT NULL UNIQUE,
                 password_hash TEXT NOT NULL,
                 role TEXT NOT NULL DEFAULT "customer",
+                phone TEXT DEFAULT NULL,
                 created_at TEXT NOT NULL
             )'
         );
+
+        // Add phone column to existing tables that may not have it
+        try {
+            $this->pdo->exec('ALTER TABLE users ADD COLUMN phone TEXT DEFAULT NULL');
+        } catch (\PDOException) {
+            // Column already exists — safe to ignore
+        }
 
         $this->pdo->exec(
             'CREATE TABLE IF NOT EXISTS products (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 name TEXT NOT NULL,
                 description TEXT,
+                category TEXT DEFAULT "Crafts",
                 price REAL NOT NULL,
                 image_url TEXT,
                 stock INTEGER NOT NULL DEFAULT 0,
@@ -61,6 +70,8 @@ final class Database
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 user_id INTEGER NOT NULL,
                 status TEXT NOT NULL DEFAULT "pending",
+                payment_status TEXT NOT NULL DEFAULT "pending_payment",
+                receipt_url TEXT DEFAULT NULL,
                 shipping_fee REAL NOT NULL,
                 subtotal REAL NOT NULL,
                 total REAL NOT NULL,
@@ -84,6 +95,21 @@ final class Database
                 FOREIGN KEY (order_id) REFERENCES orders(id)
             )'
         );
+
+        $this->pdo->exec(
+            'CREATE TABLE IF NOT EXISTS settings (
+                key TEXT PRIMARY KEY,
+                value TEXT NOT NULL
+            )'
+        );
+
+        // Add columns to existing tables
+        try { $this->pdo->exec('ALTER TABLE products ADD COLUMN category TEXT DEFAULT "Crafts"'); } catch (\PDOException) {}
+        try { $this->pdo->exec('ALTER TABLE orders ADD COLUMN payment_status TEXT DEFAULT "pending_payment"'); } catch (\PDOException) {}
+        try { $this->pdo->exec('ALTER TABLE orders ADD COLUMN receipt_url TEXT DEFAULT NULL'); } catch (\PDOException) {}
+        try { $this->pdo->exec('ALTER TABLE orders ADD COLUMN email TEXT'); } catch (\PDOException) {}
+        try { $this->pdo->exec('ALTER TABLE orders ADD COLUMN payment_method TEXT DEFAULT "gcash_qr"'); } catch (\PDOException) {}
+        try { $this->pdo->exec('ALTER TABLE orders ADD COLUMN receipt_image_path TEXT'); } catch (\PDOException) {}
     }
 
     private function seed(): void

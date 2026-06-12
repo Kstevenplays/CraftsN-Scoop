@@ -169,6 +169,12 @@ export class LandingPageComponent {
   private finishAuth() {
     this.loading = false;
     const returnUrl = this.route.snapshot.queryParamMap.get('returnUrl');
-    this.router.navigateByUrl(returnUrl || '/shop');
+    // Admins go to /admin, customers go to returnUrl or /shop
+    const user = this.auth.user();
+    if (user?.role === 'admin') {
+      this.router.navigateByUrl('/admin');
+    } else {
+      this.router.navigateByUrl(returnUrl || '/shop');
+    }
   }
 }

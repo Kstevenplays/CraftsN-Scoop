@@ -1,16 +1,29 @@
-<header class="topbar" *ngIf="showNavbar()">
+<header class="topbar" *ngIf="showCustomerNavbar()">
   <a routerLink="/shop" class="brand">Crafts N' Scoop</a>
 
   <nav>
     <a routerLink="/shop" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Shop</a>
     <a routerLink="/cart" routerLinkActive="active" class="cart-link">Cart ({{ cart.count() }})</a>
-    <a *ngIf="auth.isAuthenticated()" routerLink="/orders/my" routerLinkActive="active">Orders</a>
     <a *ngIf="auth.isAdmin()" routerLink="/admin" routerLinkActive="active">Admin</a>
-    <button *ngIf="auth.isAuthenticated()" type="button" (click)="auth.logout()">Logout</button>
+
+    <!-- User dropdown -->
+    <div class="user-dropdown" *ngIf="auth.isAuthenticated()" (click)="toggleDropdown()" tabindex="0">
+      <div class="user-trigger">
+        <span class="user-initials">{{ userInitials() }}</span>
+        <span class="user-name">{{ auth.user()?.name }}</span>
+        <span class="dropdown-arrow" [class.open]="dropdownOpen">&#9662;</span>
+      </div>
+      <div class="dropdown-menu" *ngIf="dropdownOpen" (click)="$event.stopPropagation()">
+        <a routerLink="/profile" (click)="closeDropdown()">My Profile</a>
+        <a routerLink="/orders/my" (click)="closeDropdown()">My Orders</a>
+        <hr />
+        <button type="button" (click)="handleLogout(); closeDropdown()">Logout</button>
+      </div>
+    </div>
   </nav>
 </header>
 
-<main class="page" [class.auth-page]="!showNavbar()">
+<main class="page" [class.auth-page]="!showCustomerNavbar()" [class.admin-page]="isAdminRoute()">
   <router-outlet></router-outlet>
 </main>
 

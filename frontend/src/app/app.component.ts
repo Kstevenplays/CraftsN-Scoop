@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, computed, effect, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { RouterLink, RouterLinkActive } from '@angular/router';
@@ -16,6 +16,18 @@ import { filter } from 'rxjs/operators';
 })
 export class AppComponent {
   currentUrl = '/';
+  dropdownOpen = false;
+
+  userInitials = computed(() => {
+    const user = this.auth.user();
+    if (!user) return '';
+    return user.name
+      .split(' ')
+      .map((p) => p[0])
+      .join('')
+      .toUpperCase()
+      .slice(0, 2);
+  });
 
   constructor(public auth: AuthService, public cart: CartService, private router: Router) {
     this.currentUrl = this.router.url.split('?')[0];
@@ -28,9 +40,47 @@ export class AppComponent {
     if (this.auth.token()) {
       this.auth.fetchMe().subscribe({ error: () => this.auth.logout() });
     }
+
+    // Watch auth.user changes and sync cart accordingly
+    effect(() => {
+      const user = this.auth.user();
+      if (user) {
+        // User logged in or changed — load their cart
+        this.cart.setCurrentUser(user.id);
+      } else {
+        // User logged out — clear cart
+        this.cart.clearActiveCart();
+      }
+    });
   }
 
-  showNavbar() {
-    return this.currentUrl !== '/';
+  handleLogout() {
+    this.cart.persistToStorage();
+    this.auth.logout();
+  }
+
+  isAdminRoute() {
+    return this.currentUrl.startsWith('/admin');
+  }
+
+  showCustomerNavbar() {
+    return this.currentUrl !== '/' && !this.isAdminRoute();
+  }
+
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent) {
+    // Close dropdown when clicking outside
+    const target = event.target as HTMLElement;
+    if (!target.closest('.user-dropdown')) {
+      this.dropdownOpen = false;
+    }
+  }
+
+  toggleDropdown() {
+    this.dropdownOpen = !this.dropdownOpen;
+  }
+
+  closeDropdown() {
+    this.dropdownOpen = false;
   }
 }

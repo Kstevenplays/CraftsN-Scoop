@@ -5,6 +5,8 @@ export interface User {
   name: string;
   email: string;
   role: UserRole;
+  phone?: string | null;
+  created_at?: string;
 }
 
 export interface AuthResponse {
@@ -16,6 +18,7 @@ export interface Product {
   id: number;
   name: string;
   description: string;
+  category?: string;
   price: number;
   image_url: string;
   stock: number;

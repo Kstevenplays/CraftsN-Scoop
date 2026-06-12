@@ -38,6 +38,11 @@ export class AuthService {
     );
   }
 
+  setUser(user: User): void {
+    this.userSignal.set(user);
+    localStorage.setItem('cns_user', JSON.stringify(user));
+  }
+
   logout() {
     this.tokenSignal.set(null);
     this.userSignal.set(null);

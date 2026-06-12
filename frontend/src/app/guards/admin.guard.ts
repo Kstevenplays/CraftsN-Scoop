@@ -10,5 +10,10 @@ export const adminGuard: CanActivateFn = () => {
     return true;
   }
 
+  // If logged in but not admin, redirect to shop
+  if (auth.isAuthenticated()) {
+    return router.createUrlTree(['/shop']);
+  }
+
   return router.createUrlTree(['/']);
 };

@@ -163,24 +163,126 @@ $app->group('/api', function (RouteCollectorProxy $api) use ($pdo, $auth, $jwtMi
             ]);
         });
 
+        $protected->get('/users/profile', function (Request $request, Response $response) use ($pdo) {
+            $user = $request->getAttribute('user');
+            $stmt = $pdo->prepare('SELECT id, name, email, phone, role, created_at FROM users WHERE id = :id LIMIT 1');
+            $stmt->execute(['id' => (int) ($user['sub'] ?? 0)]);
+            $profile = $stmt->fetch();
+
+            if (!$profile) {
+                return json($response, ['message' => 'User not found'], 404);
+            }
+
+            return json($response, ['user' => $profile]);
+        });
+
+        $protected->put('/users/profile', function (Request $request, Response $response) use ($pdo) {
+            $user = $request->getAttribute('user');
+            $data = (array) $request->getParsedBody();
+            $userId = (int) ($user['sub'] ?? 0);
+
+            $name = trim((string) ($data['name'] ?? ''));
+            $email = strtolower(trim((string) ($data['email'] ?? '')));
+            $phone = isset($data['phone']) ? trim((string) $data['phone']) : null;
+            $currentPassword = (string) ($data['current_password'] ?? '');
+            $newPassword = (string) ($data['new_password'] ?? '');
+
+            if ($name === '' || $email === '') {
+                return json($response, ['message' => 'Name and email are required'], 422);
+            }
+
+            if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                return json($response, ['message' => 'Invalid email format'], 422);
+            }
+
+            // If changing password, verify current password
+            if ($newPassword !== '') {
+                if ($currentPassword === '') {
+                    return json($response, ['message' => 'Current password is required to set a new password'], 422);
+                }
+
+                $stmt = $pdo->prepare('SELECT password_hash FROM users WHERE id = :id LIMIT 1');
+                $stmt->execute(['id' => $userId]);
+                $row = $stmt->fetch();
+
+                if (!$row || !password_verify($currentPassword, $row['password_hash'])) {
+                    return json($response, ['message' => 'Current password is incorrect'], 401);
+                }
+
+                if (strlen($newPassword) < 6) {
+                    return json($response, ['message' => 'New password must be at least 6 characters'], 422);
+                }
+            } elseif ($currentPassword !== '') {
+                return json($response, ['message' => 'New password is required when providing current password'], 422);
+            }
+
+            // Check email uniqueness (exclude current user)
+            $existing = $pdo->prepare('SELECT id FROM users WHERE email = :email AND id != :id LIMIT 1');
+            $existing->execute(['email' => $email, 'id' => $userId]);
+            if ($existing->fetch()) {
+                return json($response, ['message' => 'Email is already in use'], 409);
+            }
+
+            if ($newPassword !== '') {
+                $stmt = $pdo->prepare(
+                    'UPDATE users SET name = :name, email = :email, phone = :phone, password_hash = :password_hash WHERE id = :id'
+                );
+                $stmt->execute([
+                    'name' => $name,
+                    'email' => $email,
+                    'phone' => $phone,
+                    'password_hash' => password_hash($newPassword, PASSWORD_BCRYPT),
+                    'id' => $userId,
+                ]);
+            } else {
+                $stmt = $pdo->prepare(
+                    'UPDATE users SET name = :name, email = :email, phone = :phone WHERE id = :id'
+                );
+                $stmt->execute([
+                    'name' => $name,
+                    'email' => $email,
+                    'phone' => $phone,
+                    'id' => $userId,
+                ]);
+            }
+
+            $stmt = $pdo->prepare('SELECT id, name, email, phone, role, created_at FROM users WHERE id = :id LIMIT 1');
+            $stmt->execute(['id' => $userId]);
+            $profile = $stmt->fetch();
+
+            return json($response, ['message' => 'Profile updated successfully', 'user' => $profile]);
+        });
+
         $protected->post('/orders', function (Request $request, Response $response) use ($pdo) {
             $user = $request->getAttribute('user');
             $data = (array) $request->getParsedBody();
 
             $items = $data['items'] ?? [];
-            $customerName = trim((string) ($data['customer_name'] ?? ''));
-            $customerPhone = trim((string) ($data['customer_phone'] ?? ''));
-            $shippingAddress = trim((string) ($data['shipping_address'] ?? ''));
+
+            // Accept both old and new field names from frontend
+            $fullName = trim((string) ($data['full_name'] ?? $data['customer_name'] ?? ''));
+            $phone    = trim((string) ($data['phone'] ?? $data['customer_phone'] ?? ''));
+            $email    = trim((string) ($data['email'] ?? $data['customer_email'] ?? ''));
+            $deliveryAddress = trim((string) ($data['delivery_address'] ?? $data['shipping_address'] ?? ''));
+            $paymentMethod   = trim((string) ($data['payment_method'] ?? 'gcash_qr'));
+            $paymentStatus   = trim((string) ($data['payment_status'] ?? 'pending_payment'));
+            $subtotalFromFrontend = isset($data['subtotal']) ? (float) $data['subtotal'] : null;
+            $shippingFeeFromFrontend = isset($data['shipping_fee']) ? (float) $data['shipping_fee'] : null;
+            $totalAmountFromFrontend = isset($data['total_amount']) ? (float) $data['total_amount'] : null;
 
             if (!is_array($items) || count($items) === 0) {
                 return json($response, ['message' => 'Order items are required'], 422);
             }
 
-            if ($customerName === '' || $customerPhone === '' || $shippingAddress === '') {
-                return json($response, ['message' => 'Shipping details are required'], 422);
+            if ($fullName === '' || $phone === '' || $email === '' || $deliveryAddress === '') {
+                return json($response, ['message' => 'full_name, phone, email, and delivery_address are required'], 422);
             }
 
-            $shippingFee = (float) ($_ENV['SHIPPING_FEE'] ?? 80);
+            if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                return json($response, ['message' => 'Invalid email format'], 422);
+            }
+
+            $shippingFee = $shippingFeeFromFrontend ?? (float) ($_ENV['SHIPPING_FEE'] ?? 80);
             $subtotal = 0.0;
             $normalized = [];
 
@@ -210,24 +312,27 @@ $app->group('/api', function (RouteCollectorProxy $api) use ($pdo, $auth, $jwtMi
                 ];
             }
 
-            $total = $subtotal + $shippingFee;
+            $total = $totalAmountFromFrontend ?? ($subtotal + $shippingFee);
 
             $pdo->beginTransaction();
 
             try {
                 $insertOrder = $pdo->prepare(
-                    'INSERT INTO orders (user_id, status, shipping_fee, subtotal, total, customer_name, customer_phone, shipping_address, created_at)
-                     VALUES (:user_id, :status, :shipping_fee, :subtotal, :total, :customer_name, :customer_phone, :shipping_address, :created_at)'
+                    'INSERT INTO orders (user_id, status, payment_status, email, payment_method, shipping_fee, subtotal, total, customer_name, customer_phone, shipping_address, created_at)
+                     VALUES (:user_id, :status, :payment_status, :email, :payment_method, :shipping_fee, :subtotal, :total, :customer_name, :customer_phone, :shipping_address, :created_at)'
                 );
                 $insertOrder->execute([
                     'user_id' => (int) ($user['sub'] ?? 0),
                     'status' => 'pending',
+                    'payment_status' => $paymentStatus,
+                    'email' => $email,
+                    'payment_method' => $paymentMethod,
                     'shipping_fee' => $shippingFee,
                     'subtotal' => $subtotal,
                     'total' => $total,
-                    'customer_name' => $customerName,
-                    'customer_phone' => $customerPhone,
-                    'shipping_address' => $shippingAddress,
+                    'customer_name' => $fullName,
+                    'customer_phone' => $phone,
+                    'shipping_address' => $deliveryAddress,
                     'created_at' => gmdate('c'),
                 ]);
 
@@ -258,10 +363,11 @@ $app->group('/api', function (RouteCollectorProxy $api) use ($pdo, $auth, $jwtMi
                 }
 
                 $pdo->commit();
-                return json($response, ['message' => 'Order placed', 'order_id' => $orderId], 201);
+                return json($response, ['success' => true, 'order_id' => $orderId], 201);
             } catch (Throwable $e) {
                 $pdo->rollBack();
-                return json($response, ['message' => 'Failed to place order'], 500);
+                error_log('Order placement failed: ' . $e->getMessage());
+                return json($response, ['message' => 'Failed to place order: ' . $e->getMessage()], 500);
             }
         });
 
@@ -278,6 +384,60 @@ $app->group('/api', function (RouteCollectorProxy $api) use ($pdo, $auth, $jwtMi
             }
 
             return json($response, ['orders' => $orders]);
+        });
+
+        $protected->post('/orders/{id}/upload-receipt', function (Request $request, Response $response, array $args) use ($pdo) {
+            $user = $request->getAttribute('user');
+            $orderId = (int) $args['id'];
+
+            // Verify order belongs to user
+            $stmt = $pdo->prepare('SELECT id FROM orders WHERE id = :id AND user_id = :user_id LIMIT 1');
+            $stmt->execute(['id' => $orderId, 'user_id' => (int) ($user['sub'] ?? 0)]);
+            if (!$stmt->fetch()) {
+                return json($response, ['message' => 'Order not found'], 404);
+            }
+
+            $files = $request->getUploadedFiles();
+            $image = $files['receipt'] ?? null;
+
+            if (!$image instanceof UploadedFileInterface) {
+                return json($response, ['message' => 'Receipt image is required'], 422);
+            }
+
+            if ($image->getError() !== UPLOAD_ERR_OK) {
+                return json($response, ['message' => 'Upload failed'], 422);
+            }
+
+            if ($image->getSize() > 5 * 1024 * 1024) {
+                return json($response, ['message' => 'Image must be 5MB or smaller'], 422);
+            }
+
+            $originalName = $image->getClientFilename() ?? '';
+            $extension = strtolower(pathinfo($originalName, PATHINFO_EXTENSION));
+            $allowed = ['jpg', 'jpeg', 'png'];
+            if (!in_array($extension, $allowed, true)) {
+                return json($response, ['message' => 'Only JPG and PNG files are accepted'], 422);
+            }
+
+            $uploadDir = __DIR__ . '/uploads/receipts';
+            if (!is_dir($uploadDir)) {
+                mkdir($uploadDir, 0777, true);
+            }
+
+            $filename = 'receipt_' . $orderId . '_' . bin2hex(random_bytes(6)) . '.' . $extension;
+            $image->moveTo($uploadDir . '/' . $filename);
+
+            $base = rtrim((string) ($_ENV['APP_URL'] ?? ''), '/');
+            $receiptUrl = $base !== '' ? $base . '/uploads/receipts/' . $filename : '/uploads/receipts/' . $filename;
+
+            $update = $pdo->prepare('UPDATE orders SET receipt_url = :receipt_url, payment_status = :payment_status WHERE id = :id');
+            $update->execute([
+                'receipt_url' => $receiptUrl,
+                'payment_status' => 'payment_submitted',
+                'id' => $orderId,
+            ]);
+
+            return json($response, ['message' => 'Receipt uploaded', 'receipt_url' => $receiptUrl], 201);
         });
     })->add($jwtMiddleware);
 
@@ -324,6 +484,7 @@ $app->group('/api', function (RouteCollectorProxy $api) use ($pdo, $auth, $jwtMi
 
             $name = trim((string) ($data['name'] ?? ''));
             $description = trim((string) ($data['description'] ?? ''));
+            $category = trim((string) ($data['category'] ?? 'Crafts'));
             $price = (float) ($data['price'] ?? 0);
             $image = trim((string) ($data['image_url'] ?? ''));
             $stock = (int) ($data['stock'] ?? 0);
@@ -334,12 +495,13 @@ $app->group('/api', function (RouteCollectorProxy $api) use ($pdo, $auth, $jwtMi
             }
 
             $stmt = $pdo->prepare(
-                'INSERT INTO products (name, description, price, image_url, stock, is_active, created_at)
-                 VALUES (:name, :description, :price, :image_url, :stock, :is_active, :created_at)'
+                'INSERT INTO products (name, description, category, price, image_url, stock, is_active, created_at)
+                 VALUES (:name, :description, :category, :price, :image_url, :stock, :is_active, :created_at)'
             );
             $stmt->execute([
                 'name' => $name,
                 'description' => $description,
+                'category' => $category,
                 'price' => $price,
                 'image_url' => $image,
                 'stock' => max(0, $stock),
@@ -358,6 +520,7 @@ $app->group('/api', function (RouteCollectorProxy $api) use ($pdo, $auth, $jwtMi
                 'UPDATE products
                  SET name = :name,
                      description = :description,
+                     category = :category,
                      price = :price,
                      image_url = :image_url,
                      stock = :stock,
@@ -368,6 +531,7 @@ $app->group('/api', function (RouteCollectorProxy $api) use ($pdo, $auth, $jwtMi
                 'id' => $id,
                 'name' => trim((string) ($data['name'] ?? '')),
                 'description' => trim((string) ($data['description'] ?? '')),
+                'category' => trim((string) ($data['category'] ?? 'Crafts')),
                 'price' => (float) ($data['price'] ?? 0),
                 'image_url' => trim((string) ($data['image_url'] ?? '')),
                 'stock' => max(0, (int) ($data['stock'] ?? 0)),
@@ -402,8 +566,8 @@ $app->group('/api', function (RouteCollectorProxy $api) use ($pdo, $auth, $jwtMi
 
         $admin->patch('/orders/{id}/status', function (Request $request, Response $response, array $args) use ($pdo) {
             $data = (array) $request->getParsedBody();
-            $status = trim((string) ($data['status'] ?? ''));
-            $allowed = ['pending', 'processing', 'shipped', 'completed', 'cancelled'];
+            $status = strtolower(trim((string) ($data['status'] ?? '')));
+            $allowed = ['pending', 'processing', 'shipped', 'delivered', 'completed', 'cancelled'];
 
             if (!in_array($status, $allowed, true)) {
                 return json($response, ['message' => 'Invalid status'], 422);
@@ -416,6 +580,57 @@ $app->group('/api', function (RouteCollectorProxy $api) use ($pdo, $auth, $jwtMi
             ]);
 
             return json($response, ['message' => 'Order status updated']);
+        });
+        $admin->get('/settings/shipping-fee', function (Request $request, Response $response) use ($pdo) {
+            $stmt = $pdo->prepare('SELECT value FROM settings WHERE key = :key LIMIT 1');
+            $stmt->execute(['key' => 'shipping_fee']);
+            $row = $stmt->fetch();
+            $fee = $row ? (float) $row['value'] : (float) ($_ENV['SHIPPING_FEE'] ?? 80);
+            return json($response, ['shipping_fee' => $fee]);
+        });
+
+        $admin->put('/settings/shipping-fee', function (Request $request, Response $response) use ($pdo) {
+            $data = (array) $request->getParsedBody();
+            $fee = (float) ($data['shipping_fee'] ?? 0);
+            if ($fee < 0) {
+                return json($response, ['message' => 'Invalid shipping fee'], 422);
+            }
+            $stmt = $pdo->prepare('INSERT OR REPLACE INTO settings (key, value) VALUES (:key, :value)');
+            $stmt->execute(['key' => 'shipping_fee', 'value' => (string) $fee]);
+            return json($response, ['message' => 'Shipping fee updated', 'shipping_fee' => $fee]);
+        });
+
+        $admin->patch('/orders/{id}/payment', function (Request $request, Response $response, array $args) use ($pdo) {
+            $data = (array) $request->getParsedBody();
+            $paymentStatus = trim((string) ($data['payment_status'] ?? ''));
+            $allowed = ['pending_payment', 'payment_submitted', 'payment_confirmed', 'failed'];
+
+            if (!in_array($paymentStatus, $allowed, true)) {
+                return json($response, ['message' => 'Invalid payment status'], 422);
+            }
+
+            $pdo->beginTransaction();
+            try {
+                $stmt = $pdo->prepare('UPDATE orders SET payment_status = :payment_status WHERE id = :id');
+                $stmt->execute(['payment_status' => $paymentStatus, 'id' => (int) $args['id']]);
+
+                // If payment confirmed, also set order to processing
+                if ($paymentStatus === 'payment_confirmed') {
+                    $stmt2 = $pdo->prepare('UPDATE orders SET status = :status WHERE id = :id AND status = :old_status');
+                    $stmt2->execute(['status' => 'processing', 'id' => (int) $args['id'], 'old_status' => 'pending']);
+                }
+                if ($paymentStatus === 'failed') {
+                    $stmt2 = $pdo->prepare("UPDATE orders SET status = :status WHERE id = :id AND status = :old_status");
+                    $stmt2->execute(['status' => 'cancelled', 'id' => (int) $args['id'], 'old_status' => 'pending']);
+                }
+
+                $pdo->commit();
+            } catch (Throwable) {
+                $pdo->rollBack();
+                return json($response, ['message' => 'Failed to update payment status'], 500);
+            }
+
+            return json($response, ['message' => 'Payment status updated']);
         });
     })->add($adminMiddleware)->add($jwtMiddleware);
 });

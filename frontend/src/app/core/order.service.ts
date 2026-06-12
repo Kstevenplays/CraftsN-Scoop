@@ -8,12 +8,18 @@ export class OrderService {
   constructor(private http: HttpClient) {}
 
   checkout(payload: {
-    items: { product_id: number; quantity: number }[];
-    customer_name: string;
-    customer_phone: string;
-    shipping_address: string;
+    items: { product_id: number; quantity: number; unit_price: number }[];
+    full_name: string;
+    phone: string;
+    email: string;
+    delivery_address: string;
+    payment_method: string;
+    payment_status: string;
+    subtotal: number;
+    shipping_fee: number;
+    total_amount: number;
   }) {
-    return this.http.post<{ message: string; order_id: number }>(`${API_BASE}/orders`, payload);
+    return this.http.post<{ success: boolean; order_id: number }>(`${API_BASE}/orders`, payload);
   }
 
   myOrders() {

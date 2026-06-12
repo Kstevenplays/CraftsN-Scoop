@@ -3,11 +3,55 @@ import { CartItem, Product } from '../models/types';
 
 @Injectable({ providedIn: 'root' })
 export class CartService {
-  private readonly itemsSignal = signal<CartItem[]>(this.readItems());
+  private readonly itemsSignal = signal<CartItem[]>([]);
+  private currentUserId: number | null = null;
 
   readonly items = this.itemsSignal.asReadonly();
   readonly count = computed(() => this.itemsSignal().reduce((sum, item) => sum + item.quantity, 0));
   readonly subtotal = computed(() => this.itemsSignal().reduce((sum, item) => sum + item.product.price * item.quantity, 0));
+
+  private storageKey(): string {
+    if (this.currentUserId === null) {
+      return 'cns_cart_guest';
+    }
+    return `cns_cart_${this.currentUserId}`;
+  }
+
+  /** Set the current user (called by AuthService on login/register/fetchMe) */
+  setCurrentUser(userId: number | null): void {
+    // Save current cart for old user before switching
+    if (this.currentUserId !== null && this.currentUserId !== userId) {
+      this.persistToStorage();
+    }
+    this.currentUserId = userId;
+    this.loadFromStorage();
+  }
+
+  /** Load cart for a specific user from localStorage */
+  loadFromStorage(): void {
+    const raw = localStorage.getItem(this.storageKey());
+    if (!raw) {
+      this.itemsSignal.set([]);
+      return;
+    }
+    try {
+      this.itemsSignal.set(JSON.parse(raw) as CartItem[]);
+    } catch {
+      this.itemsSignal.set([]);
+    }
+  }
+
+  /** Save current cart to localStorage */
+  persistToStorage(): void {
+    const items = this.itemsSignal();
+    localStorage.setItem(this.storageKey(), JSON.stringify(items));
+  }
+
+  /** Clear the active cart signal (used on logout) */
+  clearActiveCart(): void {
+    this.itemsSignal.set([]);
+    this.currentUserId = null;
+  }
 
   add(product: Product, quantity = 1) {
     const current = [...this.itemsSignal()];
@@ -42,19 +86,6 @@ export class CartService {
 
   private save(items: CartItem[]) {
     this.itemsSignal.set(items);
-    localStorage.setItem('cns_cart', JSON.stringify(items));
-  }
-
-  private readItems(): CartItem[] {
-    const raw = localStorage.getItem('cns_cart');
-    if (!raw) {
-      return [];
-    }
-
-    try {
-      return JSON.parse(raw) as CartItem[];
-    } catch {
-      return [];
-    }
+    this.persistToStorage();
   }
 }
